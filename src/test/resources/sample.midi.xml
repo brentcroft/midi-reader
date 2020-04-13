@@ -1,0 +1,104 @@
+<midi xmlns:c="jstl">
+    <c:script>
+        //
+        RESOLUTION = 24
+
+        TICK_UNIT = 16
+        BAR = 16
+        BARS= 4 * BAR
+
+        PERCUSSION_CHANNEL = 9
+
+        drums = {
+            Rimshot: 37,
+            Acoustic_Snare: 38
+        }
+    </c:script>
+
+    <c:log>model: ${ model }</c:log>
+
+    <sequence division-type="PPQ" resolution="${ RESOLUTION }" tracks="3">
+
+        <c:foreach begin="0" end="${ BARS }">
+
+            <tick at="${ TICK_UNIT * varStatus.index }">
+
+                <!-- percussion - channel 10 (9) -->
+                <track track="0" channel="${ PERCUSSION_CHANNEL }">
+                    <instrument note="${ drums.Acoustic_Snare }">
+                        <c:choose>
+                            <c:when test="${ ( varStatus.count mod 4 ) == 1 }">
+                                <note vol="50" tick="${ $tick }" ticks="5"/>
+                            </c:when>
+                            <c:when test="${ ( varStatus.count mod 4 ) == 2 }">
+                                <note vol="50" tick="${ $tick + 8 }" ticks="5"/>
+                            </c:when>
+                            <c:when test="${ ( varStatus.count mod 4 ) == 3 }">
+                                <note vol="50" tick="${ $tick + 12 }" ticks="5"/>
+                            </c:when>
+                        </c:choose>
+                    </instrument>
+                    <instrument note="${ drums.Rimshot }">
+                        <c:choose>
+                            <c:when test="${ ( varStatus.count mod 4 ) == 0 }">
+                                <note vol="50" tick="${ $tick }" ticks="5"/>
+                                <note vol="50" tick="${ $tick + 11 }" ticks="5"/>
+                            </c:when>
+                        </c:choose>
+                    </instrument>
+                    <!--
+                    <c:if test="${ false and varStatus.index mod 4 == 0 }">
+                        <instrument note="76">
+                            <note tick="${ $tick + 8 }"/>
+                            <note tick="${ $tick + 12 }"/>
+                            <note tick="${ $tick + 32 }"/>
+                        </instrument>
+                        <instrument note="77">
+                            <note tick="${ $tick + 24 }"/>
+                        </instrument>
+                    </c:if>
+                    -->
+                </track>
+
+                <track track="1" channel="1">
+                    <instrument program="0">
+                        <c:choose>
+                            <c:when test="${ ( varStatus.count mod 8 ) == 0 }">
+                                <note vol="50" tick="${ $tick }" note="53" ticks="15"/>
+                                <note vol="50" tick="${ $tick }" note="56" ticks="15"/>
+                                <note vol="50" tick="${ $tick }" note="60" ticks="15"/>
+                            </c:when>
+                            <c:when test="${ ( varStatus.count mod 8 ) == 1 }">
+                                <note vol="50" tick="${ $tick  }" note="56" ticks="15"/>
+                                <note vol="50" tick="${ $tick }" note="60" ticks="15"/>
+                                <note vol="50" tick="${ $tick }" note="63" ticks="15"/>
+                            </c:when>
+                            <c:when test="${ ( varStatus.count mod 8 ) == 2 }">
+                                <note vol="50" tick="${ $tick  }" note="60" ticks="30"/>
+                                <note vol="50" tick="${ $tick }" note="63" ticks="30"/>
+                                <note vol="50" tick="${ $tick }" note="68" ticks="30"/>
+                            </c:when>
+                        </c:choose>
+
+                    </instrument>
+                </track>
+                <!--
+
+
+                <track track="2" channel="2">
+                    <instrument note="45" program="121">
+                        <note tick="30" ticks="16" vol="50"/>
+                        <note tick="80" ticks="16" vol="50"/>
+                    </instrument>
+                </track>
+                -->
+            </tick>
+        </c:foreach>
+
+    </sequence>
+
+    <sequencer loop-count="0">
+        <track track="0" solo="false"/>
+        <start/>
+    </sequencer>
+</midi>
