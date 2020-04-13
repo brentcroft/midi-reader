@@ -29,6 +29,21 @@ public class MidiReaderTest extends ScenarioTest< GivenMidi, WhenMidi, ThenMidi 
 
 
     @Test
+    public void play_detections() throws IOException, SAXException, ParserConfigurationException
+    {
+        given()
+                .sequence_from_file( "src/test/resources/camera-scenes.midi.xml" );
+
+        when()
+                .serialize_sequence_to_file( filepath );
+
+//        then()
+//                .file_exists( filepath )
+//                .parse_file( filepath );
+    }
+
+
+    @Test
     public void play_file() throws IOException, SAXException, ParserConfigurationException
     {
         given()

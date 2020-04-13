@@ -1,5 +1,6 @@
 package com.brentcroft.midi.fixtures;
 
+import com.brentcroft.midi.CameraScene;
 import com.brentcroft.midi.MidiWriter;
 import com.brentcroft.tools.jstl.JstlDocument;
 import com.brentcroft.tools.jstl.MapBindings;
@@ -13,7 +14,6 @@ import javax.sound.midi.Sequence;
 import javax.sound.midi.ShortMessage;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.IOException;
 
 import static javax.sound.midi.Sequence.PPQ;
@@ -45,9 +45,11 @@ public class GivenMidi extends Stage< GivenMidi >
     {
         JstlDocument jstlDocument = new JstlDocument();
 
+        CameraScene.install( jstlDocument.getJstlTemplateManager() );
+
         jstlDocument.getBindings().put( "model", new MapBindings() );
 
-        MidiWriter mw  = new MidiWriter();
+        MidiWriter mw = new MidiWriter();
         mw.setBindings( jstlDocument.getBindings() );
 
         jstlDocument.setContentHandler( mw );

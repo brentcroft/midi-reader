@@ -1,0 +1,72 @@
+<midi xmlns:c="jstl">
+    <c:script>
+        scenesCsvFilePath = 'src/test/resources/detections.csv'
+
+        RESOLUTION = 16
+        PERCUSSION_CHANNEL = 9
+
+        // see: https://en.wikipedia.org/wiki/General_MIDI#Piano
+        drums = {
+            Acoustic_Base_Drum: 35,
+            Rimshot: 37,
+            Acoustic_Snare: 38,
+            Low_Floor_Tom: 41,
+            Closed_Hi_Hat: 42,
+            High_Floor_Tom: 43,
+            Open_Hi_Hat: 46,
+            Ride_Cymbal_1: 51,
+            Cowbell: 56,
+            Tambourine: 54,
+            Maracas: 70
+        }
+
+        categories = {
+            "blackbird":       drums.Closed_Hi_Hat,
+            "blue tit":        drums.Rimshot,
+            "collared dove":   drums.High_Floor_Tom,
+            "dunnock":         drums.Cowbell,
+            "goldfinch":       drums.Maracas,
+            "great tit":       drums.Ride_Cymbal_1,
+            "mouse":           drums.Acoustic_Snare,
+            "robin":           drums.Open_Hi_Hat,
+            "sparrow":         drums.Acoustic_Base_Drum,
+            "starling":        drums.Tambourine,
+            "wood pigeon":     drums.Low_Floor_Tom
+        }
+
+    </c:script>
+
+
+    <sequence division-type="PPQ" resolution="${ RESOLUTION }" tracks="3">
+
+        <c:foreach items="${ c:camera_scenes_from_csv( scenesCsvFilePath ) }" var="scene">
+
+            <tick at="${ $index * RESOLUTION }">
+
+                <!-- percussion - channel 10 (9) -->
+                <track track="0" channel="${ PERCUSSION_CHANNEL }">
+                    <c:foreach items="${ scene.detections }" var="detection">
+                        <c:catch>
+                            <instrument note="${ categories[ detection.category ] }">
+                                <note vol="100" tick="${ $tick + ( 4 * $index ) }"/>
+                            </instrument>
+                        </c:catch>
+                        <c:if test="${ not empty caughtException }">
+                            <c:log>${ detection.category } ${ caughtException }</c:log>
+                        </c:if>
+                    </c:foreach>
+                </track>
+            </tick>
+        </c:foreach>
+    </sequence>
+    <!--
+
+    -->
+    <export file="src/test/resources/detections.midi"/>
+    <!--
+
+    -->
+    <sequencer loop-count="0">
+        <xstart/>
+    </sequencer>
+</midi>

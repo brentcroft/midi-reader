@@ -2,7 +2,6 @@ package com.brentcroft.midi.fixtures;
 
 import com.brentcroft.midi.MidiReader;
 import com.brentcroft.midi.MidiInputSource;
-import com.brentcroft.midi.MidiPlayer;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
@@ -42,8 +41,14 @@ public class WhenMidi extends Stage< WhenMidi >
 
     public WhenMidi play_sequence()
     {
-        new MidiPlayer().play(sequence, true);
-
+        try
+        {
+            new MidiReader().parse( sequence );
+        }
+        catch (Exception e)
+        {
+            exception = e;
+        }
         return self();
     }
 }

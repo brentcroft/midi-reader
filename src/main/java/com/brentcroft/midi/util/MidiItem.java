@@ -23,7 +23,8 @@ public interface MidiItem
         INSTRUMENT( "instrument" ),
         NOTE( "note" ),
         TICK( "tick" ),
-        START( "start" );
+        START( "start" ),
+        EXPORT( "export" );
 
         private final String tag;
 
@@ -78,7 +79,8 @@ public interface MidiItem
         MUTE( "mute" ),
         AT( "at" ),
         MICROS_POSITION( "micros-position" ),
-        TICK_POSITION( "tick-position" );
+        TICK_POSITION( "tick-position" ),
+        FILE( "file" );
 
         private final String attr;
 

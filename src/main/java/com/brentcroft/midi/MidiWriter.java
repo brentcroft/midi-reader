@@ -11,6 +11,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.sound.midi.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 
 import static java.lang.String.format;
@@ -118,6 +120,28 @@ public class MidiWriter extends DefaultHandler implements MidiItem
             }
 
             sequencer.start();
+        }
+        else if ( TAG.EXPORT.isTag( qName ) )
+        {
+            if ( isNull( sequence ))
+            {
+                throw new SAXException( "Received export but no sequence." );
+            }
+            else if ( !ATTR.FILE.hasAttribute( attributes ))
+            {
+                throw new SAXException( "Export has no file attribute" );
+            }
+
+            int midiFileType = mapIntOr( ATTR.TYPE, attributes, 1 );
+
+            try
+            {
+                MidiSystem.write( sequence, midiFileType, new File( ATTR.FILE.getAttribute( attributes ) ) );
+            }
+            catch ( IOException e )
+            {
+                throw new SAXException( e );
+            }
         }
         else if ( TAG.SEQUENCE.isTag( qName ) )
         {
