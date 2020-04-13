@@ -48,7 +48,7 @@
                     <c:foreach items="${ scene.detections }" var="detection">
                         <c:catch>
                             <instrument note="${ categories[ detection.category ] }">
-                                <note vol="100" tick="${ $tick + ( 4 * $index ) }"/>
+                                <note vol="${ c:format( '%.0f', 50 + ( 60 * detection.score ) ) }" tick="${ $tick + ( 4 * $index ) }"/>
                             </instrument>
                         </c:catch>
                         <c:if test="${ not empty caughtException }">
@@ -67,6 +67,6 @@
 
     -->
     <sequencer loop-count="0">
-        <xstart/>
+        <start/>
     </sequencer>
 </midi>

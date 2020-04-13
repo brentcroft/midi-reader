@@ -29,7 +29,7 @@ public class CameraScene
                     .getELTemplateManager()
                     .mapFunction( "c:camera_scenes_from_csv", CameraScene.class.getMethod( "fromCsv", String.class ) );
 
-            log.info( ()-> "Installed function: c:camera_scenes_from_csv( filepath )" );
+            log.info( () -> "Installed function: c:camera_scenes_from_csv( filepath )" );
         }
         catch ( NoSuchMethodException e )
         {
@@ -109,13 +109,15 @@ public class CameraScene
                 }
                 else
                 {
-                    LocalDate date = LocalDate.parse( columns[ header.get( "folder" ) ] );
-                    LocalTime time = LocalTime
-                            .parse(
-                                    columns[ header.get( "filename" ) ]
-                                            .substring( 0, 12 )
-                                            .replaceAll( "-", ":" )
-                                            .replaceAll( "_", "." ) );
+                    LocalDate date = null;
+                    LocalTime time = null;
+//                    LocalDate date = LocalDate.parse( columns[ header.get( "folder" ) ] );
+//                    LocalTime time = LocalTime
+//                            .parse(
+//                                    columns[ header.get( "filename" ) ]
+//                                            .substring( 0, 12 )
+//                                            .replaceAll( "-", ":" )
+//                                            .replaceAll( "_", "." ) );
                     String folder = columns[ header.get( "folder" ) ];
                     String filename = columns[ header.get( "filename" ) ];
 

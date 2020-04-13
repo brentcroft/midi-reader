@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!--
+
+    -->
+    <groupId>com.brentcroft.midi</groupId>
+    <artifactId>midi-reader</artifactId>
+    <packaging>jar</packaging>
+    <version>00.00.01</version>
+    <name>Midi XML Reader/Writer</name>
+    <!--
+
+    -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- -->
+        <maven.compiler.version>3.6.2</maven.compiler.version>
+        <maven-surefire.version>3.0.0-M4</maven-surefire.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- -->
+        <junit.version>RELEASE</junit.version>
+        <jgiven.version>0.18.2</jgiven.version>
+        <lombok.version>RELEASE</lombok.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- -->
+        <dependency>
+            <groupId>com.brentcroft.tools</groupId>
+            <artifactId>jstl-templates</artifactId>
+            <version>00.01.01</version>
+        </dependency>
+
+
+        <!-- TEST ONLY -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tngtech.jgiven</groupId>
+            <artifactId>jgiven-junit</artifactId>
+            <version>${jgiven.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- PROVIDED ONLY -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+
+    <!--
+
+    -->
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
