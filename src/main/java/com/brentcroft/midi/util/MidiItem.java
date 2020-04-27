@@ -24,7 +24,8 @@ public interface MidiItem
         NOTE( "note" ),
         TICK( "tick" ),
         START( "start" ),
-        EXPORT( "export" );
+        EXPORT( "export" ),
+        TEMPO( "tempo" );
 
         private final String tag;
 
@@ -80,7 +81,8 @@ public interface MidiItem
         AT( "at" ),
         MICROS_POSITION( "micros-position" ),
         TICK_POSITION( "tick-position" ),
-        FILE( "file" );
+        FILE( "file" ),
+        BPM( "bpm" );
 
         private final String attr;
 

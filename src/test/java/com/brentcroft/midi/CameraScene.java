@@ -121,7 +121,9 @@ public class CameraScene
                     String folder = columns[ header.get( "folder" ) ];
                     String filename = columns[ header.get( "filename" ) ];
 
-                    String newFolderFilename = format( "%s-%s", folder, filename );
+                    String newFolderFilename = header.containsKey( "timestamp" )
+                                               ? columns[ header.get( "timestamp" ) ]
+                                               : format( "%s-%s", folder, filename );
 
                     Box box = new Box(
                             Integer.parseInt( columns[ header.get( "xmin" ) ] ),

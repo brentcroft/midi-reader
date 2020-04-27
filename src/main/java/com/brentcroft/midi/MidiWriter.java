@@ -1,8 +1,8 @@
 package com.brentcroft.midi;
 
 
-import com.brentcroft.midi.util.ContextValueMapper;
 import com.brentcroft.midi.util.MidiItem;
+import com.brentcroft.tools.jstl.ContextValueMapper;
 import com.brentcroft.tools.jstl.MapBindings;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,6 +48,11 @@ public class MidiWriter extends DefaultHandler implements MidiItem
     private int noteNo = - 1;
 
     private Stack< Integer > ticks = new Stack<>();
+
+    public MidiWriter(MapBindings bindings)
+    {
+        this.bindings = bindings;
+    }
 
 
     public void startDocument() throws SAXException
@@ -110,24 +115,24 @@ public class MidiWriter extends DefaultHandler implements MidiItem
         }
         else if ( TAG.START.isTag( qName ) )
         {
-            if ( ATTR.MICROS_POSITION.hasAttribute( attributes ))
+            if ( ATTR.MICROS_POSITION.hasAttribute( attributes ) )
             {
                 sequencer.setMicrosecondPosition( mapLongOr( ATTR.MICROS_POSITION, attributes, 0 ) );
             }
-            if ( ATTR.TICK_POSITION.hasAttribute( attributes ))
+            if ( ATTR.TICK_POSITION.hasAttribute( attributes ) )
             {
-                sequencer.setTickPosition(mapLongOr( ATTR.TICK_POSITION, attributes, 0 ));
+                sequencer.setTickPosition( mapLongOr( ATTR.TICK_POSITION, attributes, 0 ) );
             }
 
             sequencer.start();
         }
         else if ( TAG.EXPORT.isTag( qName ) )
         {
-            if ( isNull( sequence ))
+            if ( isNull( sequence ) )
             {
                 throw new SAXException( "Received export but no sequence." );
             }
-            else if ( !ATTR.FILE.hasAttribute( attributes ))
+            else if ( ! ATTR.FILE.hasAttribute( attributes ) )
             {
                 throw new SAXException( "Export has no file attribute" );
             }
@@ -148,6 +153,7 @@ public class MidiWriter extends DefaultHandler implements MidiItem
             if ( isNull( sequence ) )
             {
                 int resolution = mapIntOr( ATTR.RESOLUTION, attributes, 10 );
+
                 float divisionType = ATTR.DIVISION_TYPE.hasAttribute( attributes )
                                      ? MidiItem.getDivisionType( mapKeyValue( ATTR.DIVISION_TYPE, attributes ) )
                                      : PPQ;
@@ -192,6 +198,37 @@ public class MidiWriter extends DefaultHandler implements MidiItem
             if ( nonNull( bindings ) )
             {
                 bindings.withEntry( "$tick", ticks.peek() );
+            }
+        }
+        else if ( TAG.TEMPO.isTag( qName ) )
+        {
+            long tick = mapLongOr( ATTR.TICK, attributes, ticks.isEmpty() ? 0 : ticks.peek() );
+            long bpm = mapLongOr( ATTR.BPM, attributes, 60 );
+
+            // microseconds per quarternote
+            long mpqn = ( 60 * 1000 * 1000 ) / bpm;
+
+            // create the tempo byte array
+            byte[] array = new byte[]{0, 0, 0};
+
+            for ( int i = 0; i < 3; i++ )
+            {
+                int shift = ( 3 - 1 - i ) * 8;
+                array[ i ] = ( byte ) ( mpqn >> shift );
+            }
+
+            try
+            {
+                MetaMessage setTempo = new MetaMessage( 81, array, 3 );
+
+                for ( Track track : sequence.getTracks() )
+                {
+                    track.add( new MidiEvent( setTempo, tick ) );
+                }
+            }
+            catch ( Exception ex )
+            {
+                throw new SAXException( format( "Failed to create tempo: %s", ex.getMessage() ), ex );
             }
         }
         else if ( TAG.INSTRUMENT.isTag( qName ) )

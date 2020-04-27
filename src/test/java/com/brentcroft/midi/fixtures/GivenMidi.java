@@ -3,7 +3,6 @@ package com.brentcroft.midi.fixtures;
 import com.brentcroft.midi.CameraScene;
 import com.brentcroft.midi.MidiWriter;
 import com.brentcroft.tools.jstl.JstlDocument;
-import com.brentcroft.tools.jstl.MapBindings;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.xml.sax.SAXException;
@@ -47,10 +46,9 @@ public class GivenMidi extends Stage< GivenMidi >
 
         CameraScene.install( jstlDocument.getJstlTemplateManager() );
 
-        jstlDocument.getBindings().put( "model", new MapBindings() );
-
-        MidiWriter mw = new MidiWriter();
-        mw.setBindings( jstlDocument.getBindings() );
+        // midi writer can read and write the jstl context
+        // e.g. ticks
+        MidiWriter mw = new MidiWriter( jstlDocument.getBindings() );
 
         jstlDocument.setContentHandler( mw );
 

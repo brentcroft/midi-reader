@@ -22,7 +22,7 @@ public class DetectionMidiTest extends ScenarioTest< GivenCameraMidi, WhenMidi, 
 
 
         given()
-                .detections_from_file( "src/test/resources/detections.csv" );
+                .detections_from_file( "src/test/resources/detections-02.csv" );
 
 
 //        then()

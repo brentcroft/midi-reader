@@ -38,12 +38,9 @@ public class ThenMidi extends Stage< ThenMidi >
     {
         JstlDocument jstlDocument = new JstlDocument();
 
-        jstlDocument.getBindings().put( "model", new MapBindings() );
-
-        MidiWriter mw  = new MidiWriter();
-        mw.setBindings( jstlDocument.getBindings() );
-
-        jstlDocument.setContentHandler( mw );
+        jstlDocument.setContentHandler(
+                new MidiWriter( jstlDocument.getBindings() )
+        );
 
         jstlDocument.setDocument(
                 DocumentBuilderFactory
