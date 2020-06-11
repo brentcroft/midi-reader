@@ -36,10 +36,6 @@ public class MidiReaderTest extends ScenarioTest< GivenMidi, WhenMidi, ThenMidi 
 
         when()
                 .serialize_sequence_to_file( filepath );
-
-//        then()
-//                .file_exists( filepath )
-//                .parse_file( filepath );
     }
 
 

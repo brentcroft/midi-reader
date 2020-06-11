@@ -31,8 +31,9 @@
         <dependency>
             <groupId>com.brentcroft.tools</groupId>
             <artifactId>jstl-templates</artifactId>
-            <version>00.01.01</version>
+            <version>01.01.02</version>
         </dependency>
+
 
 
         <!-- TEST ONLY -->

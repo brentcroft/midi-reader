@@ -61,10 +61,6 @@ public abstract class AbstractXMLReader implements XMLReader
         {
             parse( new InputSource( new FileInputStream( uri ) ) );
         }
-        catch ( FileNotFoundException e )
-        {
-            throw new SAXException( e );
-        }
         catch ( IOException e )
         {
             throw new SAXException( e );

@@ -2,6 +2,7 @@ package com.brentcroft.midi.fixtures;
 
 import com.brentcroft.midi.MidiReader;
 import com.brentcroft.midi.MidiInputSource;
+import com.brentcroft.midi.MidiWriter;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
@@ -34,6 +35,8 @@ public class WhenMidi extends Stage< WhenMidi >
         catch ( Exception e )
         {
             exception = e;
+
+            e.printStackTrace();
         }
 
         return self();
@@ -43,11 +46,15 @@ public class WhenMidi extends Stage< WhenMidi >
     {
         try
         {
-            new MidiReader().parse( sequence );
+            new MidiReader()
+                    .withContentHandler( new MidiWriter( null ) )
+                    .parse( sequence );
         }
         catch (Exception e)
         {
             exception = e;
+
+            e.printStackTrace();
         }
         return self();
     }

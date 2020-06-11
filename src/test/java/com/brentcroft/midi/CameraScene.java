@@ -27,9 +27,9 @@ public class CameraScene
         {
             jstl
                     .getELTemplateManager()
-                    .mapFunction( "c:camera_scenes_from_csv", CameraScene.class.getMethod( "fromCsv", String.class ) );
+                    .mapFunction( "camera_scenes_from_csv", CameraScene.class.getMethod( "fromCsv", String.class ) );
 
-            log.info( () -> "Installed function: c:camera_scenes_from_csv( filepath )" );
+            log.info( () -> "Installed function: camera_scenes_from_csv( filepath )" );
         }
         catch ( NoSuchMethodException e )
         {

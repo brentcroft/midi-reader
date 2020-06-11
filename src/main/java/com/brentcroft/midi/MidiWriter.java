@@ -20,10 +20,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static javax.sound.midi.Sequence.PPQ;
 
-/**
- * Responds to a stream of Root, Branch and Leaf events
- * by updating Leaves.
- */
 public class MidiWriter extends DefaultHandler implements MidiItem
 {
     @Setter

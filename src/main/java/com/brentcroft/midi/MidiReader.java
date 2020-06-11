@@ -27,6 +27,12 @@ public class MidiReader extends AbstractXMLReader implements MidiItem
 {
     private static final String NAMESPACE_URI = "";
 
+    public MidiReader withContentHandler(ContentHandler contentHandler)
+    {
+        setContentHandler( contentHandler );
+        return this;
+    }
+
     public void parse( InputSource input ) throws SAXException
     {
         if ( input instanceof MidiInputSource )

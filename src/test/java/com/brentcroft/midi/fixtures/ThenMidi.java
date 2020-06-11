@@ -29,7 +29,7 @@ public class ThenMidi extends Stage< ThenMidi >
 
     public ThenMidi no_exception()
     {
-        assertNull( exception );
+        assertNull( "Unexpected exception: " + exception, exception );
 
         return self();
     }
